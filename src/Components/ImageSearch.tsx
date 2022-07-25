@@ -11,7 +11,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import { APIModel } from "../Models/ImageSearchModel";
 
 const api = createApi({
-  accessKey: "a48Tv5EtAU1NQrAYUionrhJ7CxpL3rJMp_hH00LjFF8",
+  accessKey: "Your_Access_Key",
 });
 
 function ImageSearch() {
