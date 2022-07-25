@@ -68,6 +68,16 @@ function ImageSearch() {
           />
         </Stack>
       </Container>
+      <Container maxWidth="lg">
+        {images &&
+          images.map((img: any) => (
+            <img
+              key={img.id}
+              src={img.urls.regular}
+              alt={img.alt_description}
+            />
+          ))}
+      </Container>
     </div>
   );
 }
