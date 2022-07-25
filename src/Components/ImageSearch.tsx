@@ -6,6 +6,9 @@ import { InputAdornment } from "@mui/material";
 import { Container } from "@mui/system";
 import { createApi } from "unsplash-js";
 import { debounce } from "lodash";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+import { APIModel } from "../Models/ImageSearchModel";
 
 const api = createApi({
   accessKey: "a48Tv5EtAU1NQrAYUionrhJ7CxpL3rJMp_hH00LjFF8",
@@ -33,14 +36,13 @@ function ImageSearch() {
   const debouncedFetchImages = useCallback(
     debounce((query: string, cb: any) => {
       fetchImages(query, cb);
-    }, 500),
+    }, 400),
     []
   );
 
   useEffect(() => {
-    debouncedFetchImages(searchKey, (res: any) => {
-      console.log(res);
-      if (res && res.response && res.response.results) {
+    debouncedFetchImages(searchKey, (res: APIModel) => {
+      if (res.response && res.status === 200 && res?.response?.results) {
         setImages(res.response.results);
       }
     });
@@ -69,14 +71,21 @@ function ImageSearch() {
         </Stack>
       </Container>
       <Container maxWidth="lg">
-        {images &&
-          images.map((img: any) => (
-            <img
-              key={img.id}
-              src={img.urls.regular}
-              alt={img.alt_description}
-            />
-          ))}
+        <ImageList variant="masonry" cols={3} gap={8}>
+          {images && images.length
+            ? images.map((img: any) =>
+                img.urls.regular ? (
+                  <ImageListItem key={img.id}>
+                    <img
+                      src={`${img.urls.regular}?w=248&fit=crop&auto=format`}
+                      srcSet={`${img.urls.regular}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                      alt={img.alt_description}
+                    />
+                  </ImageListItem>
+                ) : null
+              )
+            : null}
+        </ImageList>
       </Container>
     </div>
   );
